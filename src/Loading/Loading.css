@@ -1,0 +1,26 @@
+
+.Loading{
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(208, 208, 208);
+}
+.Loading_container{
+     background-color: white;
+    width: 50vw;
+    height: 30vh;
+    margin: 30px auto 0 auto;
+    padding: 30px;
+    gap:50px;
+    border-radius: 30px;
+    display: flex;
+
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+.Loading_text{
+    font-size: 40px;
+    font-weight: 500;
+}
+

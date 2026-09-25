@@ -1,0 +1,69 @@
+.Diagram_chart {
+  max-width: 400px;
+  margin: 30px auto 0 auto;
+  padding: 30px;
+  background: #fff;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  
+}
+
+
+.Diagram_donut {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 260px;
+  height: 260px;
+  position: relative; 
+}
+
+.Diagram_svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg); 
+}
+
+.Diagram_track {
+  fill: none;               
+  stroke: #f5e3a8;         
+  stroke-width: 8;
+}
+
+.Diagram_progress {
+  fill: none;
+  stroke: #1f9d3a;          
+  stroke-width: 8;
+  stroke-linecap: round;    
+  transition: stroke-dashoffset 0.5s ease;
+}
+
+.Diagram_center {
+  position: absolute;
+  inset: 0;                 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.Diagram_percent {
+  font-size: 23px;
+  font-weight: 500;
+  color: #303030;
+  margin: 0;
+}
+
+.Diagram_label {
+  font-size: 20px;
+  color: #303030;
+  margin: 0;
+}
+.Diagram_header{
+    text-align: center;
+    color:#191919;
+    font-size: 20px;
+}
