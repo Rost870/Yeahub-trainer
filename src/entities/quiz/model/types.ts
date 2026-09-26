@@ -1,4 +1,14 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+export interface QuestionChecked{
+    question:string;
+    know:boolean;
+    id:number;
+    skills?: { id: number; title: string }[];
+}
+
+export interface QuestionInitial{
+    mas:QuestionChecked[];
+}
+
 export interface QuizzProps{
     skills?:string[];
     complexity?:number[];
@@ -56,31 +66,3 @@ export interface Skill{
     description:string;
     imageSrc:string;
 }
-
-export const api=createApi({
-    reducerPath:"api",
-    baseQuery:fetchBaseQuery({baseUrl:'https://api.yeatwork.ru'}),
-    endpoints:(builder)=>({
-        getNewQuizz:builder.query<MockQuizResponse,QuizzProps>({
-            query:(params)=>({
-                url:'/interview-preparation/quizzes/mock/new',
-                method:'GET',
-                params,
-            }),
-        }),
-        getSpec:builder.query<SpecReturn,SpecProps | void>({
-            query:()=>({
-                url:'/specializations',
-                method:"GET",
-            })
-        }),
-        getSkills:builder.query<SkillsReturn,SkillsProps | void>({
-            query:()=>({
-                url:'/skills',
-                method:"GET",
-            })
-        })
-
-    })
-});
-export const {useGetNewQuizzQuery,useGetSkillsQuery,useGetSpecQuery}=api;

@@ -114,14 +114,14 @@
 .Result_stats {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.10);
     display: flex;
-    gap: 30px; /* расстояние между диаграммой и легендой */
+    gap: 30px; 
     justify-content: center;
     align-items: center;
     background-color: white;
     padding: 30px;
     border-radius: 20px;
-    width: 30vw; /* или 70vw, как у Result_questions */
- margin: 30px auto 0 auto; /* добавлен отступ сверху */
+    width: 30vw; 
+ margin: 30px auto 0 auto; 
 }
 .Result_know_header{
     font-size: 19px;

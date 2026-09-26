@@ -1,10 +1,10 @@
-import { useSelector } from "react-redux";
-import type { RootState } from "../redux/store";
-import type { QuestionChecked } from "../redux/QuestionSlice";
-import { useGetNewQuizzQuery } from "../redux/api";
-import { useSearchParams } from "react-router-dom";
-import MyError from "../Error/MyError";
-import './Diagram.css'
+
+import { MyError } from '@/shared/ui';
+import { useGetNewQuizzQuery, type QuestionChecked } from '@/entities/quiz';
+import { type RootState } from '@/app/appStore';
+import { useSelector } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
+import './Diagram.css';
 function Diagram(){
     const [params]=useSearchParams();
     const mas = useSelector((state: RootState) => state.resultquestion.mas);

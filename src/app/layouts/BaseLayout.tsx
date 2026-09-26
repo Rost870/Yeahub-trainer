@@ -1,7 +1,7 @@
-import Footer from "@/Footer/Footer";
-import Header from "@/Header/Header";
+import { Header } from "@/widgets/header";
+import { Footer } from "@/widgets/footer";
 import { Outlet } from "react-router-dom";
-import './BaseLayout.module.css'
+import './BaseLayout.css'
 function BaseLayout(){
   return(
     <div className='App'>

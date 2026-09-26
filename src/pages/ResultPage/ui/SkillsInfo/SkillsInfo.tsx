@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
-import { useGetNewQuizzQuery } from "../redux/api";
+import { useGetNewQuizzQuery, type QuestionChecked } from "@/entities/quiz";
 import './SkillsInfo.css'
 import type { RootState } from "@/app/appStore";
 
@@ -35,9 +35,9 @@ function SkillsInfo() {
 
    
     const correctMap = new Map<string, number>();
-    mas.forEach(item => {
+    mas.forEach((item: QuestionChecked) => {
         if (!item.know) return;
-        item.skills?.forEach(s => {
+        item.skills?.forEach((s: { id: number; title: string }) => {
             correctMap.set(s.title, (correctMap.get(s.title) || 0) + 1);
         });
     });

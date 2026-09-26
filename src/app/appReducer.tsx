@@ -1,9 +1,7 @@
-import { api } from "@/redux/api";
+import { quizApi, questionReducer } from "@/entities/quiz";
 import { combineReducers } from "@reduxjs/toolkit";
-import questionReducer from "@/redux/QuestionSlice";
-
 
 export const rootReducer=combineReducers({
      resultquestion:questionReducer,
-        [api.reducerPath]:api.reducer,
+     [quizApi.reducerPath]:quizApi.reducer,
 })

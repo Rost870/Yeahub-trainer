@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { api } from "@/redux/api";
+import { quizApi } from "@/entities/quiz";
 import { rootReducer } from "./appReducer";
 
 export const store=configureStore({
     reducer:rootReducer,
     middleware:(getDefaultMiddleWare)=>
-        getDefaultMiddleWare().concat(api.middleware),
+        getDefaultMiddleWare().concat(quizApi.middleware),
 });
 
 

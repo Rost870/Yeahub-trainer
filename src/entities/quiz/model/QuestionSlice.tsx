@@ -1,19 +1,10 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
+import type { QuestionInitial, QuestionChecked } from "./types";
 
-
-export interface QuestionChecked{
-    question:string;
-    know:boolean;
-    id:number;
-    skills?: { id: number; title: string }[];
-}
-
-export interface QuestionInitial{
-    mas:QuestionChecked[];
-}
  export const initialState : QuestionInitial= {
     mas:[]
 }
+
 export const QuestionSlice=createSlice({
     name:'resultquestion',
     initialState,
