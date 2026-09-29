@@ -21,13 +21,14 @@
 }
 
 .Result_question {
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.10);
     display: flex;
     gap: 20px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     border-radius: 16px;
     padding: 20px;
-    width: 570px;
+    width: 100%;
+    max-width: 570px;
+    box-sizing: border-box;
 }
 .Question_title {
     color: #303030;

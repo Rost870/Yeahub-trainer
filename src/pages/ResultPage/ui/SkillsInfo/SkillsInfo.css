@@ -5,15 +5,12 @@
     padding: 30px;
     margin-top:15px;
     border-radius: 20px;
-    max-width: 33vw; 
-    max-height: 33vh;         
+    width: 100%;
+    max-width: 450px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     gap: 20px;
-    overflow: hidden;
-    height: 39vh;
-    
 }
 
 

@@ -42,3 +42,18 @@
     background-color: #6A0BFF;
     border-radius: 10px;
 }
+
+@media (max-width: 768px) {
+    .Header {
+        padding: 15px 20px;
+    }
+    .Header_text {
+        gap: 10px;
+    }
+    .Header_text span {
+        display: none;
+    }
+    .Header_reg {
+        display: none;
+    }
+}
