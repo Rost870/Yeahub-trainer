@@ -1,30 +1,20 @@
-import { type RootState } from '@/app/appStore';
-import { Loading, MyError } from '@/shared/ui';
-import { useGetNewQuizzQuery, type QuestionChecked } from '@/entities/quiz';
-import { useSelector } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
-import Diagram from './Diagram/Diagram';
-import './ResultPage.css';
-import SkillsInfo from './SkillsInfo/SkillsInfo';
+import type { QuestionChecked } from "@/entities/quiz";
+import { MyError  } from "@/shared/ui";
+import type { RootState } from "@/app/appStore";
+import { useSelector } from "react-redux";
+import Diagram from "./Diagram/Diagram";
+import SkillsInfo from "./SkillsInfo/SkillsInfo";
+import './ResultPage.css'
+import ErrorDiagram from "./ErrorDiagram/ErrorDiagram";
 function Result(){
-    const [params]=useSearchParams();
-    const mas = useSelector((state: RootState) => state.resultquestion.mas);
-    const correctAnswers=mas?.filter((item:QuestionChecked)=>item.know==true).length;
-    const specialization=Number(params.get("specialization"));
-    const complexity=params.get('complexity')?.split(",").map(Number);
-    const limit=Number(params.get('limit'));
-    const skills=params.get('skills')?.split(",");
-    const {data,isLoading,isError}=useGetNewQuizzQuery({
-        specialization,
-        complexity,
-        limit,
-        skills
-    });
-    const totalQuestions=data?.questions.length || 0;
+    const currentSession=useSelector((state:RootState)=>state.resultquestion.currentSession);
+    const correctAnswers=currentSession?.answers.filter(item=>item.know).length || 0;
+    const unCorrectAnswers=currentSession?.answers.filter(item=>!item.know).length || 0;
+    const totalQuestions=correctAnswers+unCorrectAnswers;
     const knownPercent = totalQuestions === 0 ? 0 : Math.round((correctAnswers / totalQuestions) * 100);
-    const unknowPercent=100-knownPercent;
-    if (isError || data?.questions?.length==0 || specialization==0)return <MyError />
-    if (isLoading)return (<Loading />)
+    const unknowPercent = totalQuestions === 0 ? 0 : 100 - knownPercent;
+    if (currentSession?.questions?.length==0 )return <MyError />
+    if (!currentSession || !currentSession.isFinished)return (<ErrorDiagram />)
     return(
         <div className="Result">
             
@@ -61,7 +51,7 @@ function Result(){
                         
                          <p className="Result_questions_header">Список пройденных Собеседованиий</p>
             
-                        {mas?.map((item:QuestionChecked)=>{
+                        {currentSession.answers?.map((item:QuestionChecked)=>{
                             return (<div className="Result_question" key={item.question}>
                                                         
                                     <img src='/questionImage.jpg' />

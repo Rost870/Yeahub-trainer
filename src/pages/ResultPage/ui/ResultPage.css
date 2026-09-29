@@ -157,3 +157,13 @@
 .Result_back:hover{
     background-color: #5307cd;
 }
+
+@media (max-width: 768px) {
+	   .Result_fullStatistics {
+	       flex-direction: column;
+	   }
+	   .Result_stats, .Skills_info, .Result_questions {
+	       width: 95vw;
+	       max-width: 95vw;
+	   }
+	}

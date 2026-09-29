@@ -1,26 +1,15 @@
 
 import { MyError } from '@/shared/ui';
-import { useGetNewQuizzQuery, type QuestionChecked } from '@/entities/quiz';
-import { type RootState } from '@/app/appStore';
+import type { RootState } from '@/app/appStore';
 import { useSelector } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
 import './Diagram.css';
+
 function Diagram(){
-    const [params]=useSearchParams();
-    const mas = useSelector((state: RootState) => state.resultquestion.mas);
-    const correctAnswers=mas?.filter((item:QuestionChecked)=>item.know==true).length;
-    const specialization=Number(params.get("specialization"));
-    const complexity=params.get('complexity')?.split(",").map(Number);
-    const limit=Number(params.get('limit'));
-    const skills=params.get('skills')?.split(",");
-    const {data,isError}=useGetNewQuizzQuery({
-        specialization,
-        complexity,
-        limit,
-        skills
-    });
-    const totalQuestions=data?.questions.length || 0;
-    if (isError || data?.questions?.length==0 || specialization==0)return <MyError />
+    const currentSession=useSelector((state:RootState)=>state.resultquestion.currentSession);
+    const correctAnswers=currentSession?.answers.filter(item=>item.know).length || 0;
+    const unCorrectAnswers=currentSession?.answers.filter(item=>!item.know).length || 0;
+    const totalQuestions=correctAnswers+unCorrectAnswers;
+    if (currentSession?.questions?.length==0)return <MyError />
     const knownPercent = totalQuestions === 0 ? 0 : Math.round((correctAnswers / totalQuestions) * 100);
     const radius = 50;
     const circumference = 2 * Math.PI * radius;

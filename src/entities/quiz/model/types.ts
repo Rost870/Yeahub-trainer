@@ -4,9 +4,14 @@ export interface QuestionChecked{
     id:number;
     skills?: { id: number; title: string }[];
 }
-
+export interface Session{
+    id:string;
+    questions:QuizQuestion[];
+    answers:QuestionChecked[];
+    isFinished:boolean;
+}
 export interface QuestionInitial{
-    mas:QuestionChecked[];
+    currentSession:Session | null;
 }
 
 export interface QuizzProps{
@@ -48,6 +53,9 @@ export interface SpecProps{
 }
 export interface SpecReturn{
     data:Spec[];
+    page?: number;
+    limit?: number;
+    total?: number;
 }
 
 
@@ -59,10 +67,14 @@ export interface SkillsProps{
 
 export interface SkillsReturn{
     data:Skill[];
+    page?: number;
+    limit?: number;
+    total?: number;
 }
 export interface Skill{
     id:number;
     title:string;
     description:string;
     imageSrc:string;
+    specializations?: { id: number; title: string; slug: string }[];
 }

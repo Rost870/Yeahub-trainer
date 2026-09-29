@@ -12,7 +12,23 @@ export default defineConfig({
   },
   plugins: [react()],
   server: {
-    port: 3000,
-    open: true,
-  },
-})
+        port: 3000,
+        proxy: {
+          '/api': {
+            target: 'https://api.yeatwork.ru',
+            changeOrigin: true,
+            rewrite: (path) => path.replace(/^\/api/, ''),
+          },
+        },
+      },
+      preview: {
+        port: 4173,
+        proxy: {
+          '/api': {
+            target: 'https://api.yeatwork.ru',
+            changeOrigin: true,
+            rewrite: (path) => path.replace(/^\/api/, ''),
+          },
+        },
+      },
+    });

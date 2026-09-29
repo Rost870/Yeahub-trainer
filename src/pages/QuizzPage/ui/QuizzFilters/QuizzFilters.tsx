@@ -4,10 +4,11 @@ type Props = ReturnType<typeof useQuizzFilters>;
 
 export function QuizzFilters({
   specData,
-  skillsData,
   filter,
+  canStart,
   handleSpec,
   handeSkills,
+  availableSkills,
   handleComplexity,
   SetFilter,
   handeDecrement,
@@ -38,7 +39,7 @@ export function QuizzFilters({
           <div className="Quizz_section">
             <p className="Quizz_section_title">Категории вопросов</p>
             <div className="Quizz_list">
-              {skillsData?.data?.map((item) => (
+              {availableSkills.length>0 ? availableSkills?.map((item) => (
                 <button
                   key={item.id}
                   className={`Quizz_item ${filter.skills.includes(String(item.id)) ? "isActive" : ""}`}
@@ -46,7 +47,7 @@ export function QuizzFilters({
                 >
                   {item.title}
                 </button>
-              ))}
+              )) : <p className="Quizz_list_attension">Выберите специализацию, для отображения навыков!</p>}
             </div>
           </div>
         </div>
@@ -109,12 +110,12 @@ export function QuizzFilters({
           <div className="Quizz_section">
             <p className="Quizz_section_title">Количество вопросов</p>
             <div className="Quizz_questions">
-              <button onClick={() => handeDecrement()} className="Quizz_operations">
-                <img src="minus.svg" />
+              <button aria-label="Уменьшить количество вопросов" onClick={() => handeDecrement()} className="Quizz_operations">
+                <img src="minus.svg" alt="Минус"/>
               </button>
               <span className="Quizz_limit">{filter.limit}</span>
-              <button onClick={() => handeIncrement()} className="Quizz_operations">
-                <img src="plus.svg" />
+              <button aria-label="Увеличить количество вопросов" onClick={() => handeIncrement()} className="Quizz_operations">
+                <img src="plus.svg" alt="Плюс"/>
               </button>
             </div>
           </div>
@@ -122,9 +123,10 @@ export function QuizzFilters({
       </div>
 
       <div className="Quizz_bottom">
-        <button onClick={() => handleStart()} className="Quizz_start">
-          <img src="start.svg" />
+        <button aria-label="Начать собеседование" disabled={!canStart} onClick={() => handleStart()} className="Quizz_start">
+          <img src="start.svg"  alt="Старт"/>
         </button>
+
       </div>
     </div>
   );

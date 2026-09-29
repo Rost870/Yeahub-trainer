@@ -1,5 +1,4 @@
  import { Loading, MyError } from '@/shared/ui';
-import { Link } from 'react-router-dom';
 import { QuestionProgress } from './QuestionsProgress/QuestionsProgress'; 
 import { useQuizzProcess } from '../model/useQuizzProcess';
 import { QuestionCard } from '@/entities/quiz';
@@ -13,15 +12,16 @@ function Questions() {
             index,
             limit,
             progressPercent,
-            specialization,
-            location,
+            currentQuestion,
+            isValidParams,
             handleTrue,
             handleFalse,
+            handleFinish
         } = useQuizzProcess();
-
         if (isLoading) return <Loading />;
-        if (isError || data?.questions?.length === 0 || specialization === 0) return <MyError />;
-
+        if (isError || !isValidParams || (data?.questions?.length==0)) return <MyError />;
+        if(!currentQuestion) return <MyError />;
+        const question=data?.questions[index] || null;
         return (
             <div className="Questions">
                
@@ -35,13 +35,13 @@ function Questions() {
                 <div className="Questions_container">
                 
                     <QuestionCard 
-    			data={data}
-    			index={index}
+                key={question?.id}
+    			question={question}
     			handleTrue={handleTrue}
     			handleFalse={handleFalse}
                     />
 
-                    <Link to={`/done${location.search}`} className="Question_end">Завершить</Link>
+                    <button onClick={handleFinish} className="Question_end">Завершить</button>
                 </div>
             </div>
         );

@@ -1,53 +1,38 @@
+import type { QuestionChecked } from "@/entities/quiz";
+import type { RootState } from "@/app/appStore";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
-import { useSearchParams } from "react-router-dom";
-import { useGetNewQuizzQuery, type QuestionChecked } from "@/entities/quiz";
 import './SkillsInfo.css'
-import type { RootState } from "@/app/appStore";
-
 
 function SkillsInfo() {
-    const [params] = useSearchParams();
-    const mas = useSelector((state: RootState) => state.resultquestion.mas);
-
-    const specialization = Number(params.get("specialization"));
-    const complexity = params.get('complexity')?.split(",").map(Number);
-    const limit = Number(params.get('limit'));
-    const skills = params.get('skills')?.split(",");
-
-    const { data } = useGetNewQuizzQuery({
-        specialization,
-        complexity,
-        limit,
-        skills,
-    });
-
-   const skillStats = useMemo(() => {
-    if (!data?.questions || !mas) return [];
-
-  
-    const totalsMap = new Map<string, number>();
-    data.questions.forEach(q => {
-        q.questionSkills?.forEach(s => {
-            totalsMap.set(s.title, (totalsMap.get(s.title) || 0) + 1);
-        });
-    });
+    const currentSession=useSelector((state:RootState)=>state.resultquestion.currentSession);
 
    
-    const correctMap = new Map<string, number>();
-    mas.forEach((item: QuestionChecked) => {
-        if (!item.know) return;
-        item.skills?.forEach((s: { id: number; title: string }) => {
-            correctMap.set(s.title, (correctMap.get(s.title) || 0) + 1);
-        });
-    });
+    const skillStats = useMemo(() => {
+        if (!currentSession?.answers || currentSession.answers.length === 0) return [];
 
-    return Array.from(totalsMap.entries()).map(([skill, total]) => ({
-        skill,
-        correct: correctMap.get(skill) || 0,
-        total,
-    }));
-}, [data, mas]);
+        const totalsMap = new Map<string, number>();
+        const correctMap = new Map<string, number>();
+
+        
+        currentSession.answers.forEach((item: QuestionChecked) => {
+            item.skills?.forEach((s: { id: number; title: string }) => {
+                
+                totalsMap.set(s.title, (totalsMap.get(s.title) || 0) + 1);
+
+               
+                if (item.know) {
+                    correctMap.set(s.title, (correctMap.get(s.title) || 0) + 1);
+                }
+            });
+        });
+
+        return Array.from(totalsMap.entries()).map(([skill, total]) => ({
+            skill,
+            correct: correctMap.get(skill) || 0,
+            total,
+        }));
+    }, [currentSession]);
 
     
 

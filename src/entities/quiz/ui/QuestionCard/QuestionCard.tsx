@@ -1,15 +1,16 @@
 import { useState } from "react"
-import type { MockQuizResponse } from "../../model/types";
+import type { QuizQuestion } from "../../model/types";
+
+
   export interface Props {
-        data?: MockQuizResponse;
-        index: number;
+        question:QuizQuestion | null;
         handleTrue: () => void;
         handleFalse: () => void;
     }
 
 
-export function QuestionCard({data,index,handleFalse,handleTrue}:Props){
-    const [showAnswer,setAnswer]=useState(false)
+export function QuestionCard({question,handleFalse,handleTrue}:Props){
+    const [showAnswer,setAnswer]=useState(false);
     return(
         <div className="Question">
                     <div className="Question_left">
@@ -17,11 +18,13 @@ export function QuestionCard({data,index,handleFalse,handleTrue}:Props){
                             <p className="Question_title"><svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <circle cx="4" cy="4" r="4" fill="#5533FF"/>
                                 </svg>
-                                <span>{ data?.questions[index]?.title || "Нет названия"}</span>
+                                <span>{ question?.title || "Нет названия"}</span>
                             </p>
                             {   showAnswer &&
                                 
-                            <p className="Question_description">{data?.questions[index].description || 'Нет ответа'}</p>
+                            <div className="Question_description"
+                                dangerouslySetInnerHTML={{__html:question?.shortAnswer || 'Нет ответа'}}
+                            />
                                 
 
                             }
@@ -35,7 +38,7 @@ export function QuestionCard({data,index,handleFalse,handleTrue}:Props){
                             
                         </div>
                     </div>
-                    <img src='mockImage.jpg' />
+                    <img src='mockImage.jpg'  alt="Иллюстрация к вопросу" className="Question_image" />
 
                 </div>
     )

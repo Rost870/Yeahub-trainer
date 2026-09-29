@@ -7,8 +7,10 @@ export {
 
 export {
   default as questionReducer,
-  AddQuestion,
-  ResetQuestions,
+  startSession,
+  resetSession,
+  addAnswer,
+  finishSession,
 } from './model/QuestionSlice';
 
 export { QuestionCard } from './ui/QuestionCard/QuestionCard';

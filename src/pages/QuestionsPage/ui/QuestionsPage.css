@@ -88,9 +88,11 @@
 .Question_description{
     color:#191919;
     font-size: 20px;
-    display: flex;
+    overflow-x: hidden;
+    overflow-y: auto;
     max-width: 37vw;
-    padding: 10px;
+    max-height: 230px;
+    padding: 12px 0px;
    
     gap:4px;
     align-items: center;
@@ -151,4 +153,13 @@
 }
 .Question_end:hover{
     background-color: #ffc3d2;
+}
+@media (max-width: 768px){
+    .Question_image {
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+        border-radius: 16px;
+        object-fit: cover;
+    }
 }

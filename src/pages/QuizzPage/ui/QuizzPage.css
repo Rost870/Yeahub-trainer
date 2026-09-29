@@ -92,10 +92,12 @@
 }
 .Quizz_bottom{
     display: flex;
-    justify-content: flex-end; 
-    margin-top: 100px;         
+    flex-direction: column;
+    align-items:flex-end;
+    margin-top: 90px;         
     padding-right: 10px;
 }
+
 .Quizz_start{
     color:white;
     background-color: #6A0BFF;
@@ -110,3 +112,12 @@
 .Quizz_start:hover{
     background-color: #5307cd;
 }
+.Quizz_list_attension{
+    font-size: 30px;
+}
+@media (max-width: 768px) {
+	   .Quizz { width: 95vw; padding: 15px; }
+	   .Quizz_container { flex-direction: column; }
+	   .Quizz_section { max-width: 100%; }
+	   .Quizz_right { padding-right: 0; }
+	}
