@@ -11,6 +11,7 @@ function Questions() {
             isError,
             index,
             limit,
+            totalQuestions,
             progressPercent,
             currentQuestion,
             isValidParams,
@@ -18,27 +19,27 @@ function Questions() {
             handleFalse,
             handleFinish
         } = useQuizzProcess();
+
         if (isLoading) return <Loading />;
-        if (isError || !isValidParams || (data?.questions?.length==0)) return <MyError />;
-        if(!currentQuestion) return <MyError />;
-        const question=data?.questions[index] || null;
+        if (isError || !isValidParams || totalQuestions === 0) return <MyError />;
+        if (!currentQuestion) return <MyError />;
+
         return (
             <div className="Questions">
-               
                 <QuestionProgress 
                     data={data}
+                    totalQuestions={totalQuestions}
                     index={index}
                     limit={limit}
                     progressPercent={progressPercent}
                 />
 
                 <div className="Questions_container">
-                
                     <QuestionCard 
-                key={question?.id}
-    			question={question}
-    			handleTrue={handleTrue}
-    			handleFalse={handleFalse}
+                        key={currentQuestion.id}
+                        question={currentQuestion}
+                        handleTrue={handleTrue}
+                        handleFalse={handleFalse}
                     />
 
                     <button onClick={handleFinish} className="Question_end">Завершить</button>

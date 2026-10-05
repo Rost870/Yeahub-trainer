@@ -20,6 +20,7 @@ export type {
   MockQuizResponse,
   QuizzProps,
   QuestionChecked,
+  AddAnswerPayload,
   Spec,
   Skill,
 } from './model/types';

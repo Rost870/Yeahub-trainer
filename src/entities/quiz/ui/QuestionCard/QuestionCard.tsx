@@ -1,6 +1,6 @@
 import { useState } from "react"
 import type { QuizQuestion } from "../../model/types";
-
+import DOMPurify from "dompurify";
 
   export interface Props {
         question:QuizQuestion | null;
@@ -23,7 +23,7 @@ export function QuestionCard({question,handleFalse,handleTrue}:Props){
                             {   showAnswer &&
                                 
                             <div className="Question_description"
-                                dangerouslySetInnerHTML={{__html:question?.shortAnswer || 'Нет ответа'}}
+                                dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(question?.shortAnswer || 'Нет ответа')}}
                             />
                                 
 

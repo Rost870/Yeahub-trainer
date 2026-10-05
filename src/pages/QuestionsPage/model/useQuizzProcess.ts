@@ -1,11 +1,10 @@
     import { 
       useGetNewQuizzQuery, 
-
       addAnswer, 
       finishSession, 
       startSession 
     } from "@/entities/quiz";
-    import { useState, useEffect, useMemo } from "react";
+    import { useEffect, useMemo } from "react";
     import { useDispatch, useSelector } from "react-redux";
     import { useSearchParams, useNavigate } from "react-router-dom";
     import { parseQuizzParams } from "./validateParams";
@@ -15,19 +14,23 @@
       const dispatch = useDispatch();
       const navigate = useNavigate();
       const [params] = useSearchParams();
-      const [index, setIndex] = useState(0);
-    
+
       const currentSession = useSelector((state: RootState) => state.resultquestion.currentSession);
-    
+      const hasActiveSession = Boolean(currentSession && !currentSession.isFinished);
     
       const validatedParams = useMemo(() => parseQuizzParams(params), [params]);
-    
+
+      useEffect(() => {
+        if (currentSession?.isFinished) {
+          navigate('/done', { replace: true });
+        }
+      }, [currentSession?.isFinished, navigate]);
      
       const { data, isLoading, isError } = useGetNewQuizzQuery(
         validatedParams ?? { specialization: 0, limit: 0 },
-        { skip: !validatedParams, refetchOnMountOrArgChange: true }
+        { skip: !validatedParams || hasActiveSession, refetchOnMountOrArgChange: true }
       );
-  
+      
       useEffect(() => {
         if (!currentSession && data?.questions && data.questions.length > 0) {
           dispatch(startSession({
@@ -36,57 +39,52 @@
           }));
         }
       }, [data, currentSession, dispatch]);
-    
-      const totalQuestions = data?.questions?.length || 0;
-      const limit = validatedParams?.limit ?? 0;
+
+      const index = currentSession?.answers.length ?? 0;
+      const questions = currentSession?.questions ?? data?.questions ?? [];
+      const totalQuestions = questions.length;
+      const currentQuestion = questions[index] ?? null;
+      const limit = validatedParams?.limit ?? totalQuestions;
       const specialization = validatedParams?.specialization ?? 0;
-      const progressPercent = Math.min(Math.max((index / (totalQuestions || limit || 1)) * 100, 0), 100);
+      const progressPercent = totalQuestions > 0
+        ? Math.min(Math.max((index / totalQuestions) * 100, 0), 100)
+        : 0;
     
-      const handleNext = () => {
-        if (index + 1 < totalQuestions) {
-          setIndex((prev) => prev + 1);
-        } else {
-          dispatch(finishSession());
+      const handleAnswer = (know: boolean) => {
+        if (!currentQuestion || !currentSession) return;
+        dispatch(addAnswer({
+          sessionId: currentSession.id,
+          id: currentQuestion.id,
+          question: currentQuestion.title,
+          know,
+          skills: currentQuestion.questionSkills,
+        }));
+
+        if (index + 1 >= totalQuestions) {
+          dispatch(finishSession({ sessionId: currentSession.id }));
           navigate('/done');
         }
       };
-    
-     
-      const currentQuestion = data?.questions?.[index] ?? null;
-    
-      const handleTrue = () => {
-        if (!currentQuestion) return;
-        dispatch(addAnswer({
-          id: currentQuestion.id,
-          question: currentQuestion.title,
-          know: true,
-          skills: currentQuestion.questionSkills,
-        }));
-        handleNext();
-      };
-    
-      const handleFalse = () => {
-        if (!currentQuestion) return;
-        dispatch(addAnswer({
-          id: currentQuestion.id,
-          question: currentQuestion.title,
-          know: false,
-          skills: currentQuestion.questionSkills,
-        }));
-        handleNext();
-      };
+
+      const handleTrue = () => handleAnswer(true);
+      const handleFalse = () => handleAnswer(false);
     
       const handleFinish = () => {
-        dispatch(finishSession());
+        if (currentSession) {
+          dispatch(finishSession({ sessionId: currentSession.id }));
+        } else {
+          dispatch(finishSession());
+        }
         navigate('/done');
       };
     
       return {
-        isValidParams: Boolean(validatedParams),
+        isValidParams: hasActiveSession || Boolean(validatedParams),
         currentQuestion,
         data,
-        isLoading,
-        isError,
+        questions,
+        isLoading: !hasActiveSession && isLoading,
+        isError: !hasActiveSession && isError,
         index,
         limit,
         totalQuestions,

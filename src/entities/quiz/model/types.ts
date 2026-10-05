@@ -4,6 +4,9 @@ export interface QuestionChecked{
     id:number;
     skills?: { id: number; title: string }[];
 }
+export interface AddAnswerPayload extends QuestionChecked {
+    sessionId: string;
+}
 export interface Session{
     id:string;
     questions:QuizQuestion[];
