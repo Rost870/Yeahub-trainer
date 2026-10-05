@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
 import type { AddAnswerPayload, QuestionChecked, QuestionInitial, QuizQuestion ,Session} from "./types";
-const savedSession=localStorage.getItem('quizz_session');
+
 
 const loadSavedSession=():Session | null=>{
     try{
